@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models
 
 class Pokemon(models.Model):
@@ -10,6 +11,7 @@ class Pokemon(models.Model):
 class PokemonEntity(models.Model):
     lat = models.FloatField()
     lon = models.FloatField()
+    pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name_plural = "PokemonEntities"
