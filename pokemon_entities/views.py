@@ -64,9 +64,19 @@ def show_pokemon(request, pokemon_id):
     "title_en": pokemon_record.title_en,
     "title_jp": pokemon_record.title_jp,
     "img_url": request.build_absolute_uri(pokemon_record.image.url),
-    #"previous_evolution": ,
-    #"next_evolution": ,
     }
+    if pokemon_record.previous_evolution:
+        pokemon["previous_evolution"] = {
+            "pokemon_id": pokemon_record.previous_evolution.id,
+            "img_url": request.build_absolute_uri(pokemon_record.previous_evolution.image.url),
+            "title_ru": pokemon_record.previous_evolution.title
+            }
+    if pokemon_record.next_evolution:
+        pokemon["next_evolution"] = {
+            "pokemon_id": pokemon_record.next_evolution.id,
+            "img_url": request.build_absolute_uri(pokemon_record.next_evolution.image.url),
+            "title_ru": pokemon_record.next_evolution.title,
+            }
 
     pokemon_entities = PokemonEntity.objects.filter(pokemon__id=pokemon_id)
 
