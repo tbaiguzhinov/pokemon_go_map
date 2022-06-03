@@ -61,8 +61,8 @@ def show_pokemon(request, pokemon_id):
     pokemon_record = Pokemon.objects.get(id=pokemon_id)
     pokemon = {"title_ru": pokemon_record.title,
     "description": pokemon_record.description,
-    #"title_en": ,
-    #"title_jp": ,
+    "title_en": pokemon_record.title_en,
+    "title_jp": pokemon_record.title_jp,
     "img_url": request.build_absolute_uri(pokemon_record.image.url),
     #"previous_evolution": ,
     #"next_evolution": ,
