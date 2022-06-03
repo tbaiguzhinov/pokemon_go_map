@@ -45,8 +45,8 @@ def show_all_pokemons(request):
     for pokemon in pokemons:
         pokemons_on_page.append({
             'pokemon_id': pokemon.id,
-            'img_url': pokemon.image,
             'title_ru': pokemon.title,
+            'img_url': pokemon.image.url if pokemon.image else "",
         })
 
     return render(request, 'mainpage.html', context={
