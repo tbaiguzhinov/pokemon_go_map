@@ -9,9 +9,11 @@ class Pokemon(models.Model):
         return self.title
 
 class PokemonEntity(models.Model):
+    pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE, null=True)
     lat = models.FloatField()
     lon = models.FloatField()
-    pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE, null=True)
+    appeared_at = models.DateTimeField(null=True)
+    disappeared_at = models.DateTimeField(null=True)
 
     class Meta:
         verbose_name_plural = "PokemonEntities"
