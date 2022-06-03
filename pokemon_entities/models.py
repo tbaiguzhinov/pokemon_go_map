@@ -5,7 +5,7 @@ from django.db import models
 
 class Pokemon(models.Model):
     """Покемон"""
-    title = models.CharField("имя", max_length=200, blank=True)
+    title = models.CharField("имя", max_length=200)
     title_en = models.CharField("имя на английском", max_length=200, blank=True)
     title_jp = models.CharField("имя на японском", max_length=200, blank=True)
     previous_evolution = models.ForeignKey('self',
