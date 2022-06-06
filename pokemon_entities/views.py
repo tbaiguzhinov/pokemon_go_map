@@ -61,7 +61,7 @@ def show_all_pokemons(request):
 
 
 def show_pokemon(request, pokemon_id):
-    pokemon_record = Pokemon.objects.get(id=pokemon_id)
+    pokemon_record = get_object_or_404(Pokemon, id=pokemon_id)
     pokemon = {
         "title_ru": pokemon_record.title,
         "description": pokemon_record.description,
