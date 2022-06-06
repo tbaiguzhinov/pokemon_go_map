@@ -1,9 +1,11 @@
+from urllib.error import HTTPError
 import folium
 import json
+import logging
 
-from django.http import HttpResponseNotFound
+from django.http import Http404, HttpResponseNotFound
 from django.utils.timezone import localtime
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from pokemon_entities.models import Pokemon, PokemonEntity
 
 MOSCOW_CENTER = [55.751244, 37.618423]
@@ -67,21 +69,24 @@ def show_pokemon(request, pokemon_id):
         "title_jp": pokemon_record.title_jp,
         "img_url": request.build_absolute_uri(pokemon_record.image.url),
         }
-    if pokemon_record.previous_evolution:
-        pre_evolution = pokemon_record.previous_evolution
+    previous_evoluation_pokemon = pokemon_record.previous_evolution
+    if previous_evoluation_pokemon:
         pokemon["previous_evolution"] = {
-            "pokemon_id": pre_evolution.id,
-            "img_url": request.build_absolute_uri(pre_evolution.image.url),
-            "title_ru": pre_evolution.title
+            "pokemon_id": previous_evoluation_pokemon.id,
+            "img_url": request.build_absolute_uri(previous_evoluation_pokemon.image.url),
+            "title_ru": previous_evoluation_pokemon.title
             }
-    if pokemon_record.next_evolution:
-        next_evolution = pokemon_record.next_evolution
-        pokemon["next_evolution"] = {
-            "pokemon_id": next_evolution.id,
-            "img_url": request.build_absolute_uri(next_evolution.image.url),
-            "title_ru": next_evolution.title,
+    try:
+        next_evolution_pokemon = get_object_or_404(pokemon_record.next_evolution)
+        if next_evolution_pokemon:
+            pokemon["next_evolution"] = {
+                "pokemon_id": next_evolution_pokemon.id,
+                "img_url": request.build_absolute_uri(next_evolution_pokemon.image.url),
+                "title_ru": next_evolution_pokemon.title,
             }
-
+    except Http404:
+        logging.error("Page not found")
+        pass
     pokemon_entities = PokemonEntity.objects.filter(pokemon__id=pokemon_id)
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
