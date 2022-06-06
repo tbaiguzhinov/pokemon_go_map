@@ -11,7 +11,7 @@ class Pokemon(models.Model):
         "имя на английском",
         max_length=200,
         blank=True
-        )
+    )
     title_jp = models.CharField("имя на японском", max_length=200, blank=True)
     previous_evolution = models.ForeignKey(
         'self',
@@ -19,15 +19,14 @@ class Pokemon(models.Model):
         null=True,
         blank=True,
         related_name='next_evolution',
-        on_delete=models.SET_NULL
-        )
+        on_delete=models.SET_NULL,
+    )
     description = models.TextField("описание", blank=True)
     image = models.ImageField(
         "изображение",
         upload_to="pokemon_images",
-        default=None,
-        blank=True
-        )
+        blank=True,
+    )
 
     def __str__(self):
         return self.title
@@ -38,8 +37,8 @@ class PokemonEntity(models.Model):
     pokemon = models.ForeignKey(
         Pokemon,
         on_delete=models.CASCADE,
-        verbose_name="Покемон"
-        )
+        verbose_name="Покемон",
+    )
     lat = models.FloatField("долгота")
     lon = models.FloatField("широта")
     appeared_at = models.DateTimeField("когда появился", null=True, blank=True)
@@ -47,32 +46,28 @@ class PokemonEntity(models.Model):
     level = models.IntegerField(
         "уровень",
         null=True,
-        default=None,
-        blank=True)
+        blank=True,
+    )
     health = models.IntegerField(
         "здоровье",
         null=True,
-        default=None,
-        blank=True
-        )
+        blank=True,
+    )
     strength = models.IntegerField(
         "сила",
         null=True,
-        default=None,
-        blank=True
-        )
+        blank=True,
+    )
     defence = models.IntegerField(
         "защита",
         null=True,
-        default=None,
-        blank=True
-        )
+        blank=True,
+    )
     stamina = models.IntegerField(
         "выносливость",
         null=True,
-        default=None,
-        blank=True
-        )
+        blank=True,
+    )
 
     class Meta:
         verbose_name_plural = "PokemonEntities"
