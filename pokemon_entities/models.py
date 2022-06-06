@@ -74,8 +74,8 @@ class PokemonEntity(models.Model):
         blank=True
         )
 
-    def __str__(self):
-        return f"{self.pokemon} {self.level}"
-
     class Meta:
         verbose_name_plural = "PokemonEntities"
+
+    def __str__(self):
+        return f"{self.pokemon} {self.level}"
