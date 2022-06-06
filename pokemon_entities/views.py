@@ -33,7 +33,7 @@ def show_all_pokemons(request):
     pokemon_entities = PokemonEntity.objects.filter(
         appeared_at__lte=localtime(),
         disappeared_at__gte=localtime(),
-        )
+    )
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for pokemon_entity in pokemon_entities:
@@ -41,7 +41,7 @@ def show_all_pokemons(request):
             folium_map, pokemon_entity.lat,
             pokemon_entity.lon,
             request.build_absolute_uri(pokemon_entity.pokemon.image.url)
-            )
+        )
 
     pokemons = Pokemon.objects.all()
 
@@ -68,21 +68,25 @@ def show_pokemon(request, pokemon_id):
         "title_en": pokemon_record.title_en,
         "title_jp": pokemon_record.title_jp,
         "img_url": request.build_absolute_uri(pokemon_record.image.url),
-        }
-    previous_evoluation_pokemon = pokemon_record.previous_evolution
-    if previous_evoluation_pokemon:
+    }
+    previous_evolution = pokemon_record.previous_evolution
+    if previous_evolution:
         pokemon["previous_evolution"] = {
-            "pokemon_id": previous_evoluation_pokemon.id,
-            "img_url": request.build_absolute_uri(previous_evoluation_pokemon.image.url),
-            "title_ru": previous_evoluation_pokemon.title
-            }
+            "pokemon_id": previous_evolution.id,
+            "img_url": request.build_absolute_uri(
+                previous_evolution.image.url
+            ),
+            "title_ru": previous_evolution.title
+        }
     try:
-        next_evolution_pokemon = get_object_or_404(pokemon_record.next_evolution)
-        if next_evolution_pokemon:
+        next_evolution = get_object_or_404(pokemon_record.next_evolution)
+        if next_evolution:
             pokemon["next_evolution"] = {
-                "pokemon_id": next_evolution_pokemon.id,
-                "img_url": request.build_absolute_uri(next_evolution_pokemon.image.url),
-                "title_ru": next_evolution_pokemon.title,
+                "pokemon_id": next_evolution.id,
+                "img_url": request.build_absolute_uri(
+                    next_evolution.image.url
+                ),
+                "title_ru": next_evolution.title,
             }
     except Http404:
         logging.error("Page not found")
