@@ -79,7 +79,7 @@ def show_pokemon(request, pokemon_id):
             "title_ru": previous_evolution.title
         }
     try:
-        next_evolution = get_object_or_404(pokemon_record.next_evolution)
+        next_evolution = get_object_or_404(pokemon_record.next_evolutions)
         if next_evolution:
             pokemon["next_evolution"] = {
                 "pokemon_id": next_evolution.id,
