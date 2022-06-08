@@ -78,19 +78,18 @@ def show_pokemon(request, pokemon_id):
             ),
             "title_ru": previous_evolution.title
         }
-    try:
-        next_evolution = get_object_or_404(pokemon_record.next_evolutions)
-        if next_evolution:
-            pokemon["next_evolution"] = {
-                "pokemon_id": next_evolution.id,
-                "img_url": request.build_absolute_uri(
-                    next_evolution.image.url
-                ),
-                "title_ru": next_evolution.title,
-            }
-    except Http404:
-        logging.error("Page not found")
-        pass
+    next_evolutions = pokemon_record.next_evolutions.all()
+    if next_evolutions:
+        pokemon["next_evolutions"] = []
+        for next_evolution in next_evolutions:
+            pokemon["next_evolutions"].append(
+                {
+                    "pokemon_id": next_evolution.id,
+                    "img_url": request.build_absolute_uri(
+                        next_evolution.image.url
+                    ),
+                    "title_ru": next_evolution.title,
+                })
     pokemon_entities = PokemonEntity.objects.filter(pokemon__id=pokemon_id)
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
